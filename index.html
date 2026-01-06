@@ -1,229 +1,198 @@
-import React, { useState, useEffect } from 'react';
-import { Zap, Brain, Shield, Cpu, Users, TrendingUp, Code, Play } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HJKMCS - Sovereign Titan Engine</title>
+<meta name="description" content="Next-generation neural architecture with 900-layer deep learning capabilities, real-time pose estimation, and hardened security protocols.">
+<meta name="keywords" content="AI, Neural Network, Pose Estimation, Titan Engine, Deep Learning, Sovereign Titan">
+<style>
+  /* Reset & basics */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: #0f1115; color: #fff; scroll-behavior: smooth; }
+  a { text-decoration: none; color: inherit; }
+  button { cursor: pointer; }
 
-// Inline SVG Logo
-const LogoSVG = () => (
-  <svg width="40" height="40" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="32" cy="32" r="30" fill="url(#grad1)" stroke="#00FFFF" strokeWidth="2"/>
-    <defs>
-      <linearGradient id="grad1" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#00FFFF"/>
-        <stop offset="1" stopColor="#0066FF"/>
-      </linearGradient>
-    </defs>
-  </svg>
-);
+  /* Navigation */
+  nav { position: fixed; top: 0; width: 100%; z-index: 50; background: rgba(15,17,21,0.95); backdrop-filter: blur(5px); border-bottom: 1px solid #222; }
+  nav .container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 1rem; height: 60px; }
+  nav .logo { display: flex; align-items: center; }
+  nav .logo svg { width: 40px; height: 40px; margin-right: 0.5rem; }
+  nav .menu { display: flex; gap: 1rem; align-items: center; }
+  nav .menu button, nav .menu a { background: none; border: none; color: #aaa; padding: 0.5rem; font-weight: 600; }
+  nav .menu button.active { color: #0ff; border-bottom: 2px solid #0ff; }
+  nav .get-started { padding: 0.5rem 1rem; background: linear-gradient(to right,#0ff,#0af); color:#000; border-radius:8px; font-weight:bold; transition:opacity 0.3s; }
+  nav .get-started:hover { opacity:0.85; }
+  nav .menu-toggle { display: none; }
 
-const App = () => {
-  const [activeSection, setActiveSection] = useState('hero');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [demoKey, setDemoKey] = useState(0); // For demo refresh
+  @media(max-width:768px) {
+    nav .menu { display: none; flex-direction: column; background: #111; position: absolute; top: 60px; left: 0; width: 100%; }
+    nav .menu.show { display: flex; }
+    nav .menu-toggle { display: block; background: none; border: none; color: #aaa; }
+  }
 
-  // Scroll handling
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['hero','features','technology','demo','team'];
-      const scrollPos = window.scrollY + 200;
-      for (const sec of sections) {
-        const el = document.getElementById(sec);
-        if (el && scrollPos >= el.offsetTop && scrollPos < el.offsetTop + el.offsetHeight) {
-          setActiveSection(sec);
-          break;
-        }
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  section { padding: 100px 1rem 80px; max-width: 1200px; margin: 0 auto; }
+  .hero { text-align: center; }
+  .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+  .hero p { font-size: 1.2rem; color: #aaa; margin-bottom: 2rem; }
+  .hero button { padding: 0.8rem 1.5rem; margin: 0.3rem; border: none; border-radius: 8px; font-weight: 600; }
 
-  // Scroll to section
-  const scrollToSection = (id) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-    setIsMenuOpen(false);
-  };
+  .features, .technology, .demo, .team { display: grid; gap: 2rem; }
+  .features { grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); }
+  .feature-card { background: #1a1c22; padding: 1.5rem; border-radius: 12px; border: 1px solid #222; transition: all 0.3s; }
+  .feature-card:hover { border-color: #0ff; background: #222; }
+  .feature-card svg { width: 36px; height: 36px; margin-bottom: 0.5rem; }
+  .feature-card h3 { margin-bottom: 0.5rem; }
+  .feature-card p { color: #aaa; }
 
-  return (
-    <div className="min-h-screen bg-gray-950 text-white overflow-x-hidden font-sans">
-      {/* SEO Meta */}
-      <head>
-        <title>Sovereign Titan Engine – HJKMCS</title>
-        <meta name="description" content="Next-gen AI neural network with real-time pose estimation, deep learning, and hardened security."/>
-        <meta name="keywords" content="AI, Neural Network, Pose Estimation, Deep Learning, Titan Engine, HJKMCS"/>
-        <meta name="author" content="HJKMCS Team"/>
-        <meta property="og:title" content="Sovereign Titan Engine – HJKMCS"/>
-        <meta property="og:description" content="Next-gen AI neural network with real-time pose estimation, deep learning, and hardened security."/>
-        <meta property="og:type" content="website"/>
-        <link rel="canonical" href="https://yourdomain.com/"/>
-      </head>
+  .technology, .demo, .team { margin-top: 3rem; }
 
-      {/* Navigation */}
-      <nav className="fixed w-full z-50 bg-gray-950/90 backdrop-blur-sm border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between h-16 items-center">
-          <div className="flex items-center space-x-3">
-            <LogoSVG />
-            <span className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">HJKMCS</span>
-          </div>
+  .demo-box, .team-card { background: #1a1c22; border: 1px solid #222; border-radius: 12px; padding: 1rem; text-align: center; }
+  .demo-box { min-height: 300px; display: flex; justify-content: center; align-items: center; position: relative; }
+  .team-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 1.5rem; }
 
-          <div className="hidden md:flex items-center space-x-8">
-            {['features','technology','demo','team'].map(item => (
-              <button key={item} onClick={() => scrollToSection(item)}
-                className={`px-1 py-2 text-sm font-medium transition-colors ${
-                  activeSection===item ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-gray-300 hover:text-cyan-300'
-                }`}
-              >
-                {item.charAt(0).toUpperCase() + item.slice(1)}
-              </button>
-            ))}
-            <button className="bg-gradient-to-r from-cyan-600 to-blue-600 px-4 py-2 rounded-lg text-white text-sm font-medium hover:opacity-90 transition-opacity">
-              Get Started
-            </button>
-          </div>
+  footer { background: #111; padding: 2rem 1rem; border-top: 1px solid #222; text-align: center; }
+  footer p { color: #888; font-size: 0.9rem; margin-bottom: 0.5rem; }
+  footer a { color: #aaa; margin: 0 0.5rem; transition: color 0.3s; }
+  footer a:hover { color: #0ff; }
 
-          <div className="md:hidden flex items-center">
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-300 hover:text-white">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                {isMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
-          </div>
-        </div>
+  .refresh-btn { position: absolute; top: 10px; right: 10px; padding: 0.4rem 0.8rem; background: #0ff2; border: none; border-radius: 6px; color: #0ff; font-weight: bold; }
 
-        {isMenuOpen && (
-          <div className="md:hidden bg-gray-900 border-t border-gray-800">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              {['features','technology','demo','team'].map(item => (
-                <button key={item} onClick={() => scrollToSection(item)}
-                  className="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-md w-full text-left"
-                >
-                  {item.charAt(0).toUpperCase() + item.slice(1)}
-                </button>
-              ))}
-              <button className="mt-2 w-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-4 py-2 rounded-lg text-base font-medium">
-                Get Started
-              </button>
-            </div>
-          </div>
-        )}
-      </nav>
+</style>
+</head>
+<body>
 
-      {/* Hero Section */}
-      <section id="hero" className="pt-16 pb-20 md:pt-24 md:pb-28 text-center">
-        <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-6">
-          Sovereign <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Titan</span> Engine
-        </h1>
-        <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-10">
-          Next-generation AI with real-time pose estimation, 900-layer deep learning, and hardened security.
-        </p>
-        <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <button className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:opacity-90 transition-opacity flex items-center justify-center"
-            onClick={() => setDemoKey(demoKey + 1)}>
-            <Play className="h-5 w-5 mr-2"/> Refresh Demo
-          </button>
-          <button className="bg-gray-800 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-gray-700 transition-colors">
-            Documentation
-          </button>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section id="features" className="py-20 bg-gray-900/50 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">Advanced Capabilities</h2>
-        <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
-          HJKMCS delivers cutting-edge AI technology with enterprise-grade security and performance.
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {[
-            {icon:<Brain className="h-8 w-8"/>, title:"Sovereign TitanNet", description:"900-layer deep neural architecture with incremental active depth scheduling."},
-            {icon:<Shield className="h-8 w-8"/>, title:"Hardened Security", description:"LayerNorm replacements and non-reentrant checkpointing for AMP safety."},
-            {icon:<Zap className="h-8 w-8"/>, title:"Real-time Processing", description:"Live pose estimation with MediaPipe at 30+ FPS."},
-            {icon:<Cpu className="h-8 w-8"/>, title:"Optimized Hardware", description:"CUDA acceleration with AMP support, gradient clipping, and rollback protection."},
-            {icon:<Code className="h-8 w-8"/>, title:"Modular Architecture", description:"Titan Blocks with identity initialization for safe deep network growth."},
-            {icon:<TrendingUp className="h-8 w-8"/>, title:"Progressive Training", description:"Incremental depth scheduling adapts to buffer size for optimal convergence."},
-          ].map((f,i)=>(
-            <div key={i} className="bg-gray-800/50 p-6 rounded-xl border border-gray-700 hover:border-cyan-500/30 transition-all duration-300 hover:bg-gray-800/70">
-              <div className="w-12 h-12 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-lg flex items-center justify-center mb-4">{f.icon}</div>
-              <h3 className="text-xl font-bold mb-2">{f.title}</h3>
-              <p className="text-gray-400">{f.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Technology Section */}
-      <section id="technology" className="py-20 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-6">The Titan Engine Architecture</h2>
-        <p className="text-gray-300 max-w-3xl mx-auto mb-10">
-          Proprietary neural architecture optimized for deep learning stability and performance.
-        </p>
-        <pre className="bg-gray-900 text-gray-300 p-6 rounded-lg max-w-4xl mx-auto font-mono text-left overflow-x-auto">
-{`class TitanBlock(nn.Module):
-    def __init__(self, dim):
-        self.block = nn.Sequential(
-            nn.Linear(dim, dim//4),
-            nn.LayerNorm(dim//4),
-            nn.SiLU(),
-            nn.Linear(dim//4, dim//4),
-            nn.LayerNorm(dim//4),
-            nn.SiLU(),
-            nn.Linear(dim//4, dim),
-            nn.LayerNorm(dim)
-        )
-        nn.init.zeros_(self.block[-1].weight)`}
-        </pre>
-      </section>
-
-      {/* Demo Section */}
-      <section id="demo" key={demoKey} className="py-20 bg-gray-900/50 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-6">Real-time Pose Estimation</h2>
-        <p className="text-gray-400 max-w-3xl mx-auto mb-10">
-          See HJKMCS in action with live pose estimation and neural network inference.
-        </p>
-        <div className="bg-gray-800 p-8 rounded-xl max-w-4xl mx-auto">
-          <div className="w-full aspect-video bg-gray-950 rounded-xl flex items-center justify-center border-2 border-dashed border-gray-700">
-            <Play className="h-12 w-12 text-cyan-400 animate-pulse"/>
-          </div>
-          <p className="text-gray-400 mt-4">Live Demo Simulation (click "Refresh Demo" to reload)</p>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section id="team" className="py-20 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-6">The Engineering Team</h2>
-        <p className="text-gray-400 max-w-3xl mx-auto mb-10">
-          World-class researchers and engineers pushing the boundaries of AI technology
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {[
-            {name:'Dr. Alex Chen', role:'Chief AI Architect'},
-            {name:'Dr. Maya Rodriguez', role:'Lead Research Scientist'},
-            {name:'James Wilson', role:'Senior Systems Engineer'},
-            {name:'Sophia Kim', role:'Security Lead'},
-          ].map((m,i)=>(
-            <div key={i} className="bg-gray-800/50 p-6 rounded-xl border border-gray-700 hover:border-cyan-500/30 transition-all duration-300">
-              <div className="w-24 h-24 bg-gradient-to-br from-cyan-900 to-blue-900 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <Users className="h-12 w-12 text-cyan-400"/>
-              </div>
-              <h3 className="text-xl font-bold mb-1">{m.name}</h3>
-              <p className="text-cyan-400 mb-2">{m.role}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 border-t border-gray-800 py-12 text-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <LogoSVG />
-          <p className="mt-4 text-gray-400">© 2026 HJKMCS. All rights reserved.</p>
-        </div>
-      </footer>
+<!-- Navigation -->
+<nav>
+  <div class="container">
+    <div class="logo">
+      <!-- Inline SVG Logo -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L15 8H9L12 2Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 22L9 16H15L12 22Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span style="font-weight:bold; font-size:1.2rem; background:linear-gradient(to right,#0ff,#0af); -webkit-background-clip:text; color:transparent;">HJKMCS</span>
     </div>
-  );
-};
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    <div class="menu">
+      <button onclick="scrollToSection('hero')">Home</button>
+      <button onclick="scrollToSection('features')">Features</button>
+      <button onclick="scrollToSection('technology')">Technology</button>
+      <button onclick="scrollToSection('demo')">Demo</button>
+      <button onclick="scrollToSection('team')">Team</button>
+      <a class="get-started" href="https://github.com/hjk-inc/Mind-cloning-system" target="_blank">Get Started</a>
+    </div>
+  </div>
+</nav>
 
-export default App;
+<!-- Hero -->
+<section id="hero" class="hero">
+  <h1>Sovereign <span style="color:#0ff;">Titan</span> Engine</h1>
+  <p>Next-gen neural architecture, real-time pose estimation, and hardened AI security protocols.</p>
+  <button onclick="scrollToSection('demo')">Watch Demo</button>
+  <button onclick="scrollToSection('features')">See Features</button>
+</section>
+
+<!-- Features -->
+<section id="features" class="features">
+  <div class="feature-card">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L12 22M2 12L22 12" stroke-width="2"/></svg>
+    <h3>Sovereign TitanNet</h3>
+    <p>900-layer deep neural network with dynamic active depth scheduling.</p>
+  </div>
+  <div class="feature-card">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10" stroke-width="2"/></svg>
+    <h3>Hardened Security</h3>
+    <p>LayerNorm and AMP safe checkpointing to protect your models.</p>
+  </div>
+  <div class="feature-card">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12L21 12M12 3L12 21" stroke-width="2"/></svg>
+    <h3>Real-time Processing</h3>
+    <p>Live pose estimation with immediate inference feedback at 30+ FPS.</p>
+  </div>
+</section>
+
+<!-- Technology -->
+<section id="technology">
+  <h2 style="text-align:center; margin-bottom:2rem;">The Titan Engine Architecture</h2>
+  <div class="technology">
+    <div class="feature-card">
+      <h3>Layer Normalization</h3>
+      <p>AMP safe replacement for BatchNorm in all TitanBlocks.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Active Depth Scheduling</h3>
+      <p>Adjusts layers from 50 to 450 based on training progress.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Rollback Protection</h3>
+      <p>Automatic best-loss checkpointing ensures stable training.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Demo -->
+<section id="demo">
+  <h2 style="text-align:center; margin-bottom:2rem;">Live Pose Estimation Demo</h2>
+  <div class="demo-box">
+    <button class="refresh-btn" onclick="location.reload()">Refresh Demo</button>
+    <div>Demo feed simulated here...</div>
+  </div>
+</section>
+
+<!-- Team -->
+<section id="team">
+  <h2 style="text-align:center; margin-bottom:2rem;">Our Engineering Team</h2>
+  <div class="team-grid">
+    <div class="team-card">
+      <h3>Dr. HJK-MAKER</h3>
+      <p>Chief AI Architect</p>
+    </div>
+    <div class="team-card">
+      <h3>Dr. HJK-MAKER</h3>
+      <p>Lead Research Scientist</p>
+    </div>
+    <div class="team-card">
+      <h3>RIX-PRIME</h3>
+      <p>Senior Systems Engineer</p>
+    </div>
+    <div class="team-card">
+      <h3> RIX-PRIME </h3>
+      <p>Security Lead</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>© 2026 HJKMCS. All rights reserved.</p>
+  <div>
+    <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">Security</a>
+  </div>
+</footer>
+
+<script>
+  // Menu toggle for mobile
+  function toggleMenu() {
+    document.querySelector('.menu').classList.toggle('show');
+  }
+
+  // Smooth scroll
+  function scrollToSection(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // Highlight active section
+  const sections = ['hero','features','technology','demo','team'];
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY + 200;
+    sections.forEach(sec => {
+      const el = document.getElementById(sec);
+      const btn = Array.from(document.querySelectorAll('.menu button')).find(b => b.textContent.toLowerCase() === sec);
+      if(el && btn) {
+        if(scrollY >= el.offsetTop && scrollY < el.offsetTop + el.offsetHeight) btn.classList.add('active');
+        else btn.classList.remove('active');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
